@@ -1,0 +1,63 @@
+// ==UserScript==
+// @name         禁止自动弹出登录弹窗
+// @namespace    https://github.com/ewigl/zhihu-enhanced
+// @version      1.0
+// @description  禁用非登录状态下访问知乎时自动弹出的登录弹窗。
+// @match        *://*.zhihu.com/*
+// @run-at       document-end
+// @grant        none
+// ==/UserScript==
+
+(function () {
+  "use strict";
+
+  // 当 header 上的登录/用户按钮出现时，给它绑定一次性 click 处理，用来停止观察器
+  function bindHeaderButton() {
+    const btn = document.querySelector(
+      "button.AppHeader-login, .AppHeader-userInfo > .AppHeader-profile > div > button.Button--blue"
+    );
+    if (btn) {
+      btn.addEventListener(
+        "click",
+        function () {
+          observerModal.disconnect();
+          observerHeader.disconnect();
+        },
+        { once: true }
+      );
+    }
+  }
+
+  // 观察 modal 出现并自动点击关闭
+  const observerModal = new MutationObserver(() => {
+    const closeBtn = document.querySelector(
+      ".Modal-wrapper .signFlowModal > .Modal-closeButton"
+    );
+    if (closeBtn) {
+      // 找到就点击并断开观察器
+      observerModal.disconnect();
+      observerHeader.disconnect();
+      try {
+        closeBtn.click();
+      } catch (e) {
+        /* 忽略点击异常 */
+      }
+    }
+  });
+
+  // 观察 DOM 变化以绑定 header 的按钮
+  const observerHeader = new MutationObserver(bindHeaderButton);
+
+  observerModal.observe(document, { childList: true, subtree: true });
+  observerHeader.observe(document, { childList: true, subtree: true });
+
+  // 超时保护：5 秒后停止观察（防止长期占用）
+  setTimeout(() => {
+    try {
+      observerModal.disconnect();
+      observerHeader.disconnect();
+    } catch (e) {
+      /* noop */
+    }
+  }, 5000);
+})();
