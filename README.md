@@ -4,7 +4,7 @@
 
 禁用非登录状态下访问知乎时自动弹出的登录弹窗。
 
-[GitHub](https://github.com/ewigl/zhihu-enhanced/blob/main/disableSignFlowModal.user.js) |
+[GitHub](https://github.com/ewigl/zhihu-enhanced/blob/main/disableSignFlowModal.user.js)
 
 [Greasy Fork](https://greasyfork.org/scripts/551236)
 
