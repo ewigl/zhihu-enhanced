@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         禁止自动弹出登录弹窗
-// @namespace    https://github.com/ewigl/zhihu-enhanced
+// @namespace    https://github.com/ewigl/zhihu-enhanced/blob/main/disableSignFlowModal.user.js
 // @version      1.0
 // @description  禁用非登录状态下访问知乎时自动弹出的登录弹窗。
+// @icon         https://www.zhihu.com/favicon.ico
 // @match        *://*.zhihu.com/*
 // @run-at       document-end
 // @grant        none
